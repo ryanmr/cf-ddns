@@ -8,7 +8,6 @@ import { getZoneId, getZoneRecordName } from "./env";
 import { getExternalIp } from "./ip";
 
 type OnUpdateFn = (ip: string, action: "same" | "updated") => void;
-// handleDiscordWebhook
 
 /**
  * Cron Job.

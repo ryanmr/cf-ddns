@@ -2,6 +2,7 @@ import { Elysia } from "elysia";
 import { html } from "@elysiajs/html";
 import { cron } from "@elysiajs/cron";
 import { job } from "./job";
+import { handleDiscordWebhook } from "./discord";
 
 let currentIp: string | null = null;
 let lastUpdated = new Date();
@@ -16,6 +17,7 @@ function getPage() {
   <head>
       <title>cf ddns</title>
       <meta http-equiv="refresh" content="5; url=/?t=${now.getTime()}" />
+      <link rel="stylesheet" type="text/css" href="./assets/styles.css" />
   </head>
   <body>
   <h1>${currentIp ? currentIp : "not set yet"}</h1>
@@ -29,6 +31,9 @@ function getPage() {
 </html>`;
 }
 
+console.info(
+  `👋 cloudflare-dns-sync is will start soon at http://localhost:${port}`
+);
 new Elysia()
   .use(
     cron({
@@ -36,8 +41,11 @@ new Elysia()
       pattern: cronPattern,
       run() {
         console.info(`🤖 cron job`);
-        job((ip) => {
+        job((ip, action) => {
           currentIp = ip;
+          if (action === "updated") {
+            handleDiscordWebhook(ip);
+          }
         })
           .then(() => {
             lastUpdated = new Date();
@@ -54,10 +62,14 @@ new Elysia()
   )
   .use(html())
   .get("/", () => getPage())
+  .get("/assets/styles.css", () => Bun.file("./public/styles.css"))
   .post("/force-update", async ({ set }) => {
     console.info(`👴 force update`);
-    await job((ip) => {
+    await job((ip, action) => {
       currentIp = ip;
+      if (action === "updated") {
+        handleDiscordWebhook(ip);
+      }
     })
       .then(() => {
         lastUpdated = new Date();

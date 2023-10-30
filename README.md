@@ -4,10 +4,10 @@
 
 ## Tech
 
-- bun
-- cloudflare
-- ifconfig.co
-- elysia
+- [bun](https://bun.sh/)
+- [cloudflare](https://developers.cloudflare.com/api/)
+- [ifconfig.co](https://ifconfig.co/)
+- [elysia](https://elysiajs.com/)
 
 ## Cutting edge user interface
 
@@ -26,17 +26,22 @@ bun install
 To run:
 
 ```bash
-bun run index.ts
+bun run src/index.ts
 ```
 
-This project was created using `bun init` in bun v1.0.1 but then when upgraded v1.0.3, bun broken on my system. So now it just runs in docker only, which is fine until I can upgrade my system. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.
+## Environment variables
 
-### Docker
+Remember to set your environment variables:
 
-I recommend using `docker compose` now for this.
+```sh
+CLOUDFLARE_ACCESS_TOKEN=...
+CLOUDFLARE_RECORD_NAME...
+CLOUDFLARE_ZONE_ID=...
+```
 
-Be sure to copy `docker-compose.env.sample` into `docker-compose.env` and set your values accordingly. Then run:
+Optionally, there's a [Discord webhook](https://discord.com/developers/docs/resources/webhook):
 
 ```
-docker compose up --build
+DISCORD_WEBHOOK_URL=...
 ```
+

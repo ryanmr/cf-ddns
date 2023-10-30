@@ -50,7 +50,7 @@ new Elysia()
           .then(() => {
             lastUpdated = new Date();
             console.info(
-              `😺 cloudflare dns sync done - ${lastUpdated.toISOString()}`
+              `🤖 cloudflare dns sync done at ${lastUpdated.toISOString()}`
             );
           })
           .catch((err) => {
@@ -64,7 +64,7 @@ new Elysia()
   .get("/", () => getPage())
   .get("/assets/styles.css", () => Bun.file("./public/styles.css"))
   .post("/force-update", async ({ set }) => {
-    console.info(`👴 force update`);
+    console.info(`🫸 force update`);
     await job((ip, action) => {
       currentIp = ip;
       if (action === "updated") {
@@ -74,7 +74,7 @@ new Elysia()
       .then(() => {
         lastUpdated = new Date();
         console.info(
-          `😺 cloudflare dns sync done - ${lastUpdated.toISOString()}`
+          `😀 cloudflare dns sync done at ${lastUpdated.toISOString()}`
         );
         set.redirect = "/?force-update=successful";
       })

@@ -1,7 +1,8 @@
-# docker hub bun uses debian
-FROM oven/bun:1.0.3
+# learn more:
+# https://hub.docker.com/r/oven/bun
+FROM oven/bun:1.0.7-alpine
 
-RUN apt update && apt install tini
+RUN apk add --no-cache tini
 
 WORKDIR /app
 
@@ -15,6 +16,8 @@ RUN bun install --production --frozen-lockfile
 
 # tini increases shutdown reliability
 # https://github.com/krallin/tini
-ENTRYPOINT ["/usr/bin/tini", "--"]
+ENTRYPOINT ["/sbin/tini", "--"]
+
+USER 1001
 
 CMD [ "bun", "src/index.ts" ]
